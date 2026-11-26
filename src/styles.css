@@ -622,6 +622,63 @@ body {
   padding: 12px 14px;
 }
 
+.command-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.command-card {
+  border-radius: 14px;
+  padding: 14px 16px;
+  background: rgba(17, 24, 39, 0.88);
+  border: 1px solid rgba(148, 163, 184, 0.22);
+}
+
+.command-card.AWAS {
+  border-color: rgba(239, 68, 68, 0.65);
+  background: rgba(239, 68, 68, 0.14);
+}
+
+.command-card.SIAGA {
+  border-color: rgba(249, 115, 22, 0.55);
+  background: rgba(249, 115, 22, 0.12);
+}
+
+.command-card.WASPADA {
+  border-color: rgba(234, 179, 8, 0.45);
+  background: rgba(234, 179, 8, 0.1);
+}
+
+.command-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.command-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #f8fafc;
+  margin-bottom: 4px;
+}
+
+.command-note {
+  font-size: 0.79rem;
+  color: #cbd5e1;
+  line-height: 1.4;
+}
+
+.btn-night-active {
+  background: rgba(168, 85, 247, 0.25);
+  border-color: #a855f7;
+  color: #e9d5ff;
+}
+
 .chart-wrap {
   margin-top: 8px;
   overflow-x: auto;

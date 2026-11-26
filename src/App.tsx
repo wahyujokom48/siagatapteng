@@ -10,7 +10,6 @@ import {
   Wind,
   Thermometer,
   MapPin,
-  Siren,
   Gauge,
   Cloud,
   Scale,
@@ -21,6 +20,8 @@ import {
   Clock,
   Mountain,
   WifiOff,
+  Moon,
+  Volume2,
 } from 'lucide-react';
 import { MONITORED_DISTRICTS, RegionGroup } from './data/districts';
 import {
@@ -49,6 +50,8 @@ import {
 import { evaluateLandslideRisk } from './services/accessAndLandslide';
 import { EmergencyReadinessPanel } from './components/EmergencyReadinessPanel';
 import { CycloneAnalysisPanel } from './components/CycloneAnalysisPanel';
+import { CommandSummaryPanel } from './components/CommandSummaryPanel';
+import { requestScreenWakeLock, startSiren, stopSiren } from './services/sirenAudio';
 
 const WEATHER_CACHE_KEY = 'siaga_tapteng_weather_cache_v1';
 
@@ -191,6 +194,7 @@ export default function App() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [isOfflineCache, setIsOfflineCache] = useState<boolean>(false);
+  const [nightWatch, setNightWatch] = useState<boolean>(false);
   const [notifStatus, setNotifStatus] = useState<NotificationStatus>(getNotificationStatus());
   const [lastUpdated, setLastUpdated] = useState<string>('-');
 
@@ -224,6 +228,9 @@ export default function App() {
         const critical = results.filter((r) => r.alertLevel === 'SIAGA' || r.alertLevel === 'AWAS');
         if (critical.length > 0) {
           const names = critical.map((c) => `${c.district.name} (${c.alertLevel})`).join(', ');
+          if (nightWatch) {
+            startSiren(8000);
+          }
           await sendDisasterNotification(
             'PERINGATAN DINI BANJIR TAPTENG & SIBOLGA!',
             `Potensi hujan lebat/ekstrem terdeteksi di: ${names}. Segera pantau aliran sungai & siapkan evakuasi.`
@@ -255,11 +262,26 @@ export default function App() {
 
   useEffect(() => {
     loadAllWeather(true);
+    const refreshMs = nightWatch ? 5 * 60 * 1000 : 15 * 60 * 1000;
     const interval = setInterval(() => {
       loadAllWeather(true);
-    }, 15 * 60 * 1000);
+    }, refreshMs);
     return () => clearInterval(interval);
-  }, [loadAllWeather]);
+  }, [loadAllWeather, nightWatch]);
+
+  useEffect(() => {
+    let wakeLock: WakeLockSentinel | null = null;
+    if (nightWatch) {
+      requestScreenWakeLock().then((wl) => {
+        wakeLock = wl;
+      });
+    } else {
+      stopSiren();
+    }
+    return () => {
+      wakeLock?.release().catch(() => {});
+    };
+  }, [nightWatch]);
 
   const selected = weatherList.find((w) => w.district.id === selectedId) ?? weatherList[0];
 
@@ -385,9 +407,18 @@ export default function App() {
             Bagikan ke WA
           </button>
 
-          <button className="btn btn-danger" onClick={handleSimulateAlert}>
-            <Siren size={16} />
-            Tes Peringatan
+          <button
+            className={`btn ${nightWatch ? 'btn-night-active' : ''}`}
+            onClick={() => setNightWatch((prev) => !prev)}
+            title="Layar tetap menyala, refresh tiap 5 menit, dan sirine otomatis berbunyi jika SIAGA/AWAS"
+          >
+            <Moon size={16} />
+            {nightWatch ? 'Jaga Malam: AKTIF' : 'Mode Jaga Malam'}
+          </button>
+
+          <button className="btn btn-danger" onClick={() => { startSiren(3500); handleSimulateAlert(); }}>
+            <Volume2 size={16} />
+            Tes Sirine &amp; Peringatan
           </button>
 
           <button className="btn" onClick={() => loadAllWeather(false)} disabled={loading}>
@@ -443,6 +474,10 @@ export default function App() {
             Update: {lastUpdated} WIB (otomatis tiap 15 menit)
           </div>
         </section>
+      )}
+
+      {highestAlert && selected && (
+        <CommandSummaryPanel weatherList={weatherList} selected={selected} />
       )}
 
       <main className="grid-layout">
