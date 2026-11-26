@@ -48,6 +48,7 @@ import {
 } from './services/aiAnalysis';
 import { evaluateLandslideRisk } from './services/accessAndLandslide';
 import { EmergencyReadinessPanel } from './components/EmergencyReadinessPanel';
+import { CycloneAnalysisPanel } from './components/CycloneAnalysisPanel';
 
 const WEATHER_CACHE_KEY = 'siaga_tapteng_weather_cache_v1';
 
@@ -699,6 +700,9 @@ export default function App() {
                   </div>
                 </div>
               </div>
+
+              {/* Analisis Khusus Awan Siklon & Bibit Badai Samudra Hindia */}
+              <CycloneAnalysisPanel />
 
               {/* Peta Satelit Awan, Radar Hujan & Siklon Interaktif */}
               <div className="card">
