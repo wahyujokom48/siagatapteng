@@ -2,10 +2,10 @@
 // Mengirim peringatan dini ke Telegram jika terdeteksi status SIAGA/AWAS di Tapteng-Sibolga atau Bibit Siklon Barat Nias
 
 const POINTS = [
+  { name: 'Rumah Saya (Pandan)', lat: 1.68681, lon: 98.822743 },
+  { name: 'Kantor Saya (Sibolga Utara)', lat: 1.745144, lon: 98.777456 },
   { name: 'Sitahuis (Hulu)', lat: 1.805, lon: 98.825 },
   { name: 'Tukka (Hulu)', lat: 1.72, lon: 98.87 },
-  { name: 'Pandan', lat: 1.6908, lon: 98.8286 },
-  { name: 'Sibolga Kota', lat: 1.7395, lon: 98.785 },
   { name: 'Samudra Hindia Barat Nias', lat: 1.1, lon: 96.8, isOcean: true },
 ];
 

@@ -679,6 +679,25 @@ body {
   color: #e9d5ff;
 }
 
+.personal-panel {
+  margin-bottom: 20px;
+  border-color: rgba(56, 189, 248, 0.4);
+  background: linear-gradient(145deg, rgba(2, 132, 199, 0.14), rgba(17, 24, 39, 0.9));
+}
+
+.personal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: 12px;
+}
+
+.personal-box {
+  background: rgba(15, 23, 42, 0.72);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 12px;
+  padding: 14px;
+}
+
 .chart-wrap {
   margin-top: 8px;
   overflow-x: auto;

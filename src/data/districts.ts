@@ -12,6 +12,28 @@ export interface District {
 }
 
 export const MONITORED_DISTRICTS: District[] = [
+  // Titik Pribadi Prioritas (Rumah & Kantor)
+  {
+    id: 'rumah-saya',
+    name: 'Rumah Saya (Pandan)',
+    region: 'Tapanuli Tengah',
+    lat: 1.68681,
+    lon: 98.822743,
+    elevationNote: 'Titik Rumah • Area Pandan',
+    riskProfile: 'Tinggi',
+    riverBasin: 'Sekitar Pandan / Hilir Tukka–Sarudik',
+  },
+  {
+    id: 'kantor-saya',
+    name: 'Kantor Saya (Sibolga)',
+    region: 'Kota Sibolga',
+    lat: 1.745144,
+    lon: 98.777456,
+    elevationNote: 'Titik Kantor • Area Sibolga Utara',
+    riskProfile: 'Tinggi',
+    riverBasin: 'Perbukitan & Drainase Sibolga Utara',
+  },
+
   // Kabupaten Tapanuli Tengah
   {
     id: 'pandan',

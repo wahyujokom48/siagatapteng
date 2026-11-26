@@ -51,6 +51,7 @@ import { evaluateLandslideRisk } from './services/accessAndLandslide';
 import { EmergencyReadinessPanel } from './components/EmergencyReadinessPanel';
 import { CycloneAnalysisPanel } from './components/CycloneAnalysisPanel';
 import { CommandSummaryPanel } from './components/CommandSummaryPanel';
+import { PersonalCommutePanel } from './components/PersonalCommutePanel';
 import { requestScreenWakeLock, startSiren, stopSiren } from './services/sirenAudio';
 
 const WEATHER_CACHE_KEY = 'siaga_tapteng_weather_cache_v1';
@@ -187,7 +188,7 @@ const RADAR_LAYERS: {
 
 export default function App() {
   const [weatherList, setWeatherList] = useState<DistrictWeather[]>([]);
-  const [selectedId, setSelectedId] = useState<string>('pandan');
+  const [selectedId, setSelectedId] = useState<string>('rumah-saya');
   const [regionFilter, setRegionFilter] = useState<'Semua' | RegionGroup>('Semua');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [radarLayer, setRadarLayer] = useState<RadarLayer>('wind');
@@ -478,6 +479,10 @@ export default function App() {
 
       {highestAlert && selected && (
         <CommandSummaryPanel weatherList={weatherList} selected={selected} />
+      )}
+
+      {weatherList.length > 0 && (
+        <PersonalCommutePanel weatherList={weatherList} onSelectDistrict={setSelectedId} />
       )}
 
       <main className="grid-layout">
